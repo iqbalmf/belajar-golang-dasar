@@ -19,11 +19,34 @@ func main() {
 	fmt.Println("keliling: ", bangunDatar.keliling())
 
 	fmt.Println("Lingkaran =====")
-	lingkaran:= Lingkaran{10}
+	lingkaran := Lingkaran{10}
 	fmt.Println("diameter: ", lingkaran.diameter)
 	fmt.Println("luas: ", lingkaran.luas())
 	fmt.Println("keliling: ", lingkaran.keliling())
 	fmt.Println("jari-jari: ", lingkaran.jarijari())
+
+	fmt.Println("EMBEDDED INTERFACE")
+	fmt.Println("BANGUNRUANG====")
+	var bangunRuang hitung = &Kubus{10}
+	kubusInstance := &Kubus{Sisi: 10}
+	fmt.Println("sisi	   :", kubusInstance.sisiNya())
+	fmt.Println("luas      :", bangunRuang.luas())
+	fmt.Println("keliling  :", bangunRuang.keliling())
+	fmt.Println("volume    :", bangunRuang.volume())
+
+
+	fmt.Println("KOMBINASI SLICE & INTERFACE")
+	//Dengan memanfaatkan slice dan interface{}, kita bisa membuat data array yang isinya adalah bisa apa saja.
+	//data fruits yang terdiri dari Map, slice, dan string
+	var fruits = []interface{}{
+		map[string]interface{}{"name": "strawberry", "total": 10},
+		[]string{"manggo", "pineapple", "papaya"},
+		"orange",
+	}
+
+	for _, each := range fruits {
+		fmt.Println(each)
+	}
 }
 
 type HasName interface {
@@ -89,4 +112,34 @@ func (persegi Persegi) luas() float64 {
 
 func (persegi Persegi) keliling() float64 {
 	return persegi.sisi * 4
+}
+
+// embedded interface
+type hitung2d interface {
+	luas() float64
+	keliling() float64
+}
+type hitung3d interface {
+	volume() float64
+}
+type hitung interface {
+	hitung2d
+	hitung3d
+}
+
+type Kubus struct {
+	Sisi float64
+}
+
+func (k *Kubus) volume() float64 {
+	return math.Pow(k.Sisi, 3)
+}
+func (k *Kubus) luas() float64 {
+	return math.Pow(k.Sisi, 2) * 6 //sisi^2 *6
+}
+func (k *Kubus) keliling() float64 {
+	return k.Sisi * 12
+}
+func (k *Kubus) sisiNya() float64 {
+	return k.Sisi
 }
